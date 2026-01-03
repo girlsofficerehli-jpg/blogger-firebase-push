@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Enable Notifications</title>
 </head>
+
 <body style="font-family:Arial;text-align:center;padding:40px;">
 
   <h2>🔔 Enable Push Notification</h2>
@@ -25,24 +26,22 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js"></script>
 
   <script>
-    // 🔹 Firebase Config (यह बाद में भरेंगे)
     const firebaseConfig = {
-     apiKey: "AIzaSyC4xZjQiSaufXZgMwrdcMxBD5pPwSjw9oE",
-  authDomain: "bloggerpush-1629b.firebaseapp.com",
-  projectId: "bloggerpush-1629b",
-  storageBucket: "bloggerpush-1629b.firebasestorage.app",
-  messagingSenderId: "957209541400",
-  appId: "1:957209541400:web:7484c3bab2ba6b6132fc6d",
-
+      apiKey: "AIzaSyC4xZjQiSaufXZgMwrdcMxBD5pPwSjw9oE",
+      authDomain: "bloggerpush-1629b.firebaseapp.com",
+      projectId: "bloggerpush-1629b",
+      storageBucket: "bloggerpush-1629b.firebasestorage.app",
+      messagingSenderId: "957209541400",
+      appId: "1:957209541400:web:7484c3bab2ba6b6132fc6d"
     };
 
     firebase.initializeApp(firebaseConfig);
     const messaging = firebase.messaging();
 
-    // 🔹 Service Worker Register
-    navigator.serviceWorker.register(
-      "/blogger-firebase-push/firebase-messaging-sw.js"
-    );
+    // 🔹 SAFE Service Worker Register
+    navigator.serviceWorker.register("firebase-messaging-sw.js")
+      .then(() => console.log("Service Worker Registered"))
+      .catch(err => console.error("SW Error", err));
 
     // 🔹 Permission Request
     function requestPermission() {
@@ -58,10 +57,12 @@
     // 🔹 Token Generate
     function getToken() {
       messaging.getToken({
-        vapidKey: "YOUR_VAPID_KEY"
+        vapidKey: "BCKtBsW75qJvC2angBqx5GU54OdrwCoCDKFKetXzpTZIGL3IFPJP1lb44emEu06BebnhK3_o5OO56pnTHGkHCxY"
       }).then(token => {
         console.log("FCM TOKEN:", token);
         alert("Notification Enabled ✅");
+      }).catch(err => {
+        console.error("Token Error", err);
       });
     }
   </script>
