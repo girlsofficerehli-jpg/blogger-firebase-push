@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Enable Notifications</title>
+</head>
+<body style="font-family:Arial;text-align:center;padding:40px;">
+
+  <h2>🔔 Enable Push Notification</h2>
+  <p>New update पाने के लिए notification allow करें</p>
+
+  <button onclick="requestPermission()" style="
+    padding:12px 20px;
+    background:#e91e63;
+    color:#fff;
+    border:none;
+    border-radius:6px;
+    font-size:16px;
+    cursor:pointer;">
+    Enable Notification
+  </button>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js"></script>
+
+  <script>
+    // 🔹 Firebase Config (यह बाद में भरेंगे)
+    const firebaseConfig = {
+     apiKey: "AIzaSyC4xZjQiSaufXZgMwrdcMxBD5pPwSjw9oE",
+  authDomain: "bloggerpush-1629b.firebaseapp.com",
+  projectId: "bloggerpush-1629b",
+  storageBucket: "bloggerpush-1629b.firebasestorage.app",
+  messagingSenderId: "957209541400",
+  appId: "1:957209541400:web:7484c3bab2ba6b6132fc6d",
+
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+
+    // 🔹 Service Worker Register
+    navigator.serviceWorker.register(
+      "/blogger-firebase-push/firebase-messaging-sw.js"
+    );
+
+    // 🔹 Permission Request
+    function requestPermission() {
+      Notification.requestPermission().then(permission => {
+        if (permission === "granted") {
+          getToken();
+        } else {
+          alert("Notification permission denied");
+        }
+      });
+    }
+
+    // 🔹 Token Generate
+    function getToken() {
+      messaging.getToken({
+        vapidKey: "YOUR_VAPID_KEY"
+      }).then(token => {
+        console.log("FCM TOKEN:", token);
+        alert("Notification Enabled ✅");
+      });
+    }
+  </script>
+
+</body>
+</html>
